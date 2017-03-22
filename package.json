@@ -1,0 +1,19 @@
+{
+  "name": "kanro.body",
+  "version": "1.0.0-dev.2",
+  "description": "Body parser middleware for Kanro",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "higan@live.cn",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/body-parser": "^1.16.1",
+    "@types/node": "^7.0.5"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "kanro.core": "^1.0.0-dev.32"
+  }
+}
