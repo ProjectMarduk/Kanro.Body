@@ -1,10 +1,10 @@
 import * as BodyParserCore from "body-parser";
 import * as MulterCore from "multer";
-import { Kanro } from "kanro.core";
+import { Kanro } from "kanro";
 
-declare module "kanro.core" {
+declare module "kanro" {
     namespace Kanro {
-        namespace Core {
+        namespace Http {
             interface IRequest {
                 body: { [name: string]: any };
                 file: Express.Multer.File;
@@ -17,8 +17,8 @@ declare module "kanro.core" {
 }
 
 export namespace Body {
-    export class BodyParser extends Kanro.BaseRequestHandler {
-        async handler(request: Kanro.Core.IRequest): Promise<Kanro.Core.IRequest> {
+    export class BodyParser extends Kanro.Executors.BaseRequestHandler {
+        async handler(request: Kanro.Http.IRequest): Promise<Kanro.Http.IRequest> {
             await new Promise((res, rej) => {
                 BodyParserCore.json()(<any>request.meta, undefined, (err) => {
                     if (err) {
@@ -44,10 +44,10 @@ export namespace Body {
             return request;
         }
 
-        type: Kanro.Core.ExecutorType.RequestHandler = Kanro.Core.ExecutorType.RequestHandler;
+        type: Kanro.Executors.ExecutorType.RequestHandler = Kanro.Executors.ExecutorType.RequestHandler;
         name: string = "BodyParser";
 
-        constructor(config: Kanro.Config.IRequestHandlerConfig) {
+        constructor(config: Kanro.Containers.IRequestHandlerContainer) {
             super(config);
         }
     }
@@ -55,8 +55,8 @@ export namespace Body {
     export class BodyModule implements Kanro.Core.IModule {
         dependencies: Kanro.Core.IModuleInfo[];
 
-        executorInfos: { [name: string]: Kanro.Core.IExecutorInfo; };
-        async getExecutor(config: Kanro.Config.IExecutorConfig): Promise<Kanro.Core.IExecutor> {
+        executorInfos: { [name: string]: Kanro.Executors.IExecutorInfo; };
+        async getExecutor(config: Kanro.Containers.IExecutorContainer): Promise<Kanro.Executors.IExecutor> {
             if (config.name == "BodyParser") {
                 return new BodyParser(<any>config);
             }
@@ -64,7 +64,7 @@ export namespace Body {
         }
 
         public constructor() {
-            this.executorInfos = { BodyParser: { type: Kanro.Core.ExecutorType.RequestHandler, name: "BodyParser" } };
+            this.executorInfos = { BodyParser: { type: Kanro.Executors.ExecutorType.RequestHandler, name: "BodyParser" } };
         }
     }
 }
