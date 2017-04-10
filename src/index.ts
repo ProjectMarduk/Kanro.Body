@@ -6,9 +6,9 @@ declare module "kanro" {
     namespace Kanro {
         namespace Http {
             interface IRequest {
-                body: { [name: string]: any };
-                file: Express.Multer.File;
-                files: {
+                body?: { [name: string]: any };
+                file?: Express.Multer.File;
+                files?: {
                     [fieldName: string]: Express.Multer.File[];
                 };
             }
